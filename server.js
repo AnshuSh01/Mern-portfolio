@@ -7,17 +7,17 @@ const morgan = require("morgan");
 const path = require("path");
 dotenv.config();
 const app = express();
-
+app.use(cors());
 app.use(express.json());
 app.use(morgan("dev"));
 
 // static files acces
-app.use(express.static(path.join(__dirname, "./client/build")));
 
 app.use("/api/v1/portfolio", require("./routes/portfolioRoute"));
 
-app.get("*", function (req, res) {
-  res.sendFile(path.join(__dirname, "./client/build/index.html"));
+app.get("/", (req, res) => {
+  app.use(express.static(path.join(__dirname, "client/build")));
+  res.sendFile(path.join(__dirname, "client/build/index.html"));
 });
 const PORT = process.env.PORT || 8080;
 
